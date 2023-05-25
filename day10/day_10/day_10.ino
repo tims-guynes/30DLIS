@@ -7,9 +7,16 @@ int red = 11;  // these are our output pins for three LED colors
 int green = 10;
 int blue = 9;
 
+int ledPins[] = {
+  5, 6, 7, 8
+};
+int pinCount = 4;
+
 int switch1 = 2;
 int switch2 = 3;
 int switch3 = 4;
+
+
  
 unsigned int batteryCapacity = 50000;
 unsigned int batteryLevel = 0;
@@ -28,7 +35,12 @@ void setup() {
   pinMode(switch1, INPUT);
   pinMode(switch2, INPUT);
   pinMode(switch3, INPUT);
- 
+  //
+  for (int thisPin = 0; thisPin < pinCount; thisPin++) {
+    pinMode(ledPins[thisPin], OUTPUT);
+  }
+
+
   // Start serial monitor
   Serial.begin(9600);
 }
@@ -124,12 +136,21 @@ void blink_colors(){
 //******************************************
  
 void loop() {
-    
+  
+
+
   if (digitalRead(switch1) == HIGH){
     chargeBattery();
   }
   if (digitalRead(switch1) == HIGH && digitalRead(switch2) == HIGH){
     blink_colors();
+  }
+  if (digitalRead(switch2) == HIGH && digitalRead(switch3) == HIGH){
+    for (int thisPin = 0; thisPin < pinCount; thisPin++) {
+      digitalWrite(ledPins[thisPin], HIGH);
+      delay(100);
+      digitalWrite(ledPins[thisPin], LOW);
+  }
   }
 
 }
